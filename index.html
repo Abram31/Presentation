@@ -2,13 +2,16 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,
+			maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>History API / Routing</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/blood.css">
+
+
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,8 +19,108 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section style="font-size: 6rem;"> History API / Routing</section>
+				<section>
+					<span style="font-size:4rem">History API</span> <br> <br>
+					<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
+						display: block;">The DOM Window object provides access to the browser's
+						session
+						history (not to be confused for WebExtensions history) through the history
+						object. It exposes useful methods and properties that let you navigate
+						back and forth through the user's history, and manipulate the contents of
+						the history stack.</span>
+
+				</section>
+			
+				<section>
+					<section>
+						<span style="font-size:4rem">How are the History API and routing related ?</span>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>SPA</h2>
+						<span>(Single Page Application)</span>
+					</section>
+					<section>
+						<span style= 'text-align: justify;
+							display: block;'> <span style= 'font-size: 4rem; text-align: center;
+								display: block;'>SPA</span> <br> web application hosted on a single page
+							that
+							loads all
+							javascript files (modules, widgets, controls, etc.) and CSS files along
+							with loading the page itself to make it work</span>
+					</section>
+					<section>
+						<span> <u>API History and Routing</u> are help implement the SPA principle
+							in native Javascript</span>
+					</section>
+				</section>
+				<section>
+					<section style="font-size: 6rem;">Window.history</section>
+					<section><ul style="display:flex; flex-direction: column; gap: 2rem">
+							<li> <u style= 'color: yellowgreen;'>back()</u> - to move backward
+								through history</li>
+							<li><u style= 'color: yellowgreen;'>forward()</u> - similarly, you can
+								move forward (as if the user clicked
+								the Forward button)</li>
+
+						</ul>
+					</section>
+					<section>
+						<ul style="display:flex; flex-direction: column; gap: 2rem">
+							<u style= 'color: yellowgreen;'> go() </u>
+							<li>to move forward a page, just like calling forward() if added
+								argument 1</li>
+							<li>just like calling back() if added argument -1</li>
+							<li>If added argument 0 page is will reload</li>
+							<li>If added (argument > 1) if (argument < 1) you can move forward or
+									backward in pages by the number of pages specified by the argument
+							</li>
+
+						</ul>
+					</section>
+					<section>
+						<ul style="display:flex; flex-direction: column; gap: 2rem;">
+							<li>history.<u style= 'color: yellowgreen;'>pushState</u>(state, title[,
+								url]) - in an HTML document, the method adds an entry to the browser's
+								session history stack</li>
+							<li>history.<u style= 'color: yellowgreen;'>replaceState</u> (state,
+								title[, url])- remove an entry to the browser's session history stack</li>
+							<li>history.<u style= 'color: yellowgreen;'>length</u>() - return history
+								stack length</li>
+
+						</ul>
+					</section>
+					<section>
+						<span>addEventListener('<u style= 'color: yellowgreen;'>popstate</u>',
+							(event) => { }) -  popstate event will be triggered by doing a browser
+							action such as a click on the back or forward button (or calling
+							history.back() or history.forward() in JavaScript)</span>
+					</section>
+					<section> <img src="./img/tree-session-history.jpg" alt=""></section>
+					<section> <img src="./img/history-1.jpg" alt=""></section>
+					<section> <img src="./img/history-2.jpg" alt=""></section>
+					<section> <img src="./img/history-3.jpg" alt=""></section>
+					<section> <img src="./img/history-4.jpg" alt=""></section>
+				</section>
+
+				<section>
+					<section>
+						<span style="font-size:4rem">Routing</span> 
+					</section>
+
+					<section>
+					<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
+						display: block;">
+						A router is a JavaScript object that maps URLs to functions. The router
+						calls a function based on the URL. In the past, a web application was a
+						series of interconnected pages. This could either be static pages or
+						dynamic pages that are generated on the server.</span>
+				</section>
+				</section>
+				
+
 			</div>
 		</div>
 
