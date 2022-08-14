@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/blood.css">
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
 
 
 
@@ -20,23 +21,6 @@
 		<div class="reveal">
 			<div class="slides">
 				<section style="font-size: 6rem;"> History API / Routing</section>
-				<section>
-					<span style="font-size:4rem">History API</span> <br> <br>
-					<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
-						display: block;">The DOM Window object provides access to the browser's
-						session
-						history (not to be confused for WebExtensions history) through the history
-						object. It exposes useful methods and properties that let you navigate
-						back and forth through the user's history, and manipulate the contents of
-						the history stack.</span>
-
-				</section>
-			
-				<section>
-					<section>
-						<span style="font-size:4rem">How are the History API and routing related ?</span>
-					</section>
-				</section>
 				<section>
 					<section>
 						<h2>SPA</h2>
@@ -57,6 +41,20 @@
 					</section>
 				</section>
 				<section>
+					<span style="font-size:4rem">History API</span> <br> <br>
+					<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
+						display: block;">The DOM Window object provides access to the browser's
+						session
+						history (not to be confused for WebExtensions history) through the history
+						object. It exposes useful methods and properties that let you navigate
+						back and forth through the user's history, and manipulate the contents of
+						the history stack.</span>
+
+				</section>
+
+				
+				
+				<section>
 					<section style="font-size: 6rem;">Window.history</section>
 					<section><ul style="display:flex; flex-direction: column; gap: 2rem">
 							<li> <u style= 'color: yellowgreen;'>back()</u> - to move backward
@@ -74,7 +72,7 @@
 								argument 1</li>
 							<li>just like calling back() if added argument -1</li>
 							<li>If added argument 0 page is will reload</li>
-							<li>If added (argument > 1) if (argument < 1) you can move forward or
+							<li>If added (argument > 1) if (argument <1) you can move forward or
 									backward in pages by the number of pages specified by the argument
 							</li>
 
@@ -94,7 +92,7 @@
 					</section>
 					<section>
 						<span>addEventListener('<u style= 'color: yellowgreen;'>popstate</u>',
-							(event) => { }) -  popstate event will be triggered by doing a browser
+							(event) => { }) - popstate event will be triggered by doing a browser
 							action such as a click on the back or forward button (or calling
 							history.back() or history.forward() in JavaScript)</span>
 					</section>
@@ -107,20 +105,189 @@
 
 				<section>
 					<section>
-						<span style="font-size:4rem">Routing</span> 
+						<span style="font-size:4rem">Routing</span>
 					</section>
 
 					<section>
-					<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
-						display: block;">
-						A router is a JavaScript object that maps URLs to functions. The router
-						calls a function based on the URL. In the past, a web application was a
-						series of interconnected pages. This could either be static pages or
-						dynamic pages that are generated on the server.</span>
-				</section>
-				</section>
-				
+						<span style="font-size: 2rem; line-height: 3rem; text-align: justify;
+							display: block;">
+							A router is a JavaScript object that maps URLs to functions. The router
+							calls a function based on the URL. In the past, a web application was a
+							series of interconnected pages. This could either be static pages or
+							dynamic pages that are generated on the server.</span>
+					</section>
+					<section>Example of creating a route</section>
+					<section>
+						<pre><code ><script type="text/template">
+							npm install express morgan nodemon --save
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Create server.js
+						<pre><code data-line-numbers><script type="text/template">
+							const express = require('express');
+							const morgan = require('morgan');
+							const app = express();
 
+							app.use(morgan('dev'));
+							app.use(express.static('public'))
+
+							app.get('*', (req, res) => {
+								res.sendFile(__dirname + '/src/index.html')
+							})
+							app.listen(7000, () => 
+							console.log("App is listening on port 7000"))
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Create index.html
+						<pre><code data-line-numbers style="max-height: 100vh;font-size: .7rem; line-height: 1rem;"  ><script type="text/template">
+							<!DOCTYPE html>
+							<html lang="en">
+								<head>
+									<meta charset="UTF-8">
+									<meta name="viewport" 
+									content="width=device-width, initial-scale=1.0">
+									<link rel="stylesheet" href="style.css">
+									<title>Document</title>
+								</head>
+								<body>
+									<nav>
+										<button router-link="/home">Home</button>
+										<button router-link="/about">About</button>
+										<button router-link="/contact">Contact</button>
+										<button router-link="/unknown">Error</button>
+									</nav>
+									<h1>Javascript Routing</h1>
+									<div id="app">
+									</div>
+
+									<template id= 'home'>
+										<div class="container-home">Home</div>
+									</template>
+									<template id= 'about'>
+										<div class="container-about">About</div>
+									</template>
+									<template id= 'contact'>
+										<div class="container-contact">Contact</div>
+									</template>
+									<template id= 'error'>
+										<div class="container-error">Error</div>
+									</template>
+
+									<script src="index.js"></script>
+									
+								</body>						
+								</script>
+						</code>
+					</section>
+					<section>
+						Create main.js
+						<pre><code data-line-numbers style="font-size: .7rem; line-height: 1rem;" ><script data-ln-start-from="8" data-line-numbers type="text/template">
+															let root = document.getElementById('app');
+																let Router = function (name, routes) {
+																	return {
+																		name,
+																		routes
+																	}
+																};
+																let routerInstance = new Router('routerInstance', [{
+																	path: "/",
+																	name: "Root"
+																},
+																{
+																	path: "/home",
+																	name: "Home"
+																},
+																{
+																	path: '/about',
+																	name: "About"
+																},
+																{
+																	path: '/contact',
+																	name: "Contact"
+																}
+																])
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Add to main.js
+						<pre><code data-line-numbers data-ln-start-from="26" style="font-size: .7rem; line-height: 1rem;" ><script data-ln-start-from="8" data-line-numbers type="text/template">
+															window.onload = () => {
+																let currentPath = window.location.pathname;
+																if (currentPath === '/') {
+																	root.innerHTML = 'You are on Home page'
+																} else {
+																	let route = routerInstance.routes.filter(r => r.path === currentPath)[0];
+																	if (route) {
+																	} else {
+																		const pastElement = document.querySelector(`#home`)
+																		insertElement(pastElement, root)
+																	}
+																}
+															}
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Add to main.js <br>
+						to create an array of buttons <br>
+						with "router" attribute <br>
+						<pre><code data-line-numbers data-ln-start-from="40" style="font-size: .7rem; line-height: 1rem;" ><script data-ln-start-from="8" data-line-numbers type="text/template">
+															let definedRoutes = Array.from(document.querySelectorAll('[router-link]'));
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Adding listener to buttons navigate
+						<pre><code data-line-numbers data-ln-start-from="42" style="font-size: .7rem; line-height: 1rem;" ><script data-ln-start-from="8" data-line-numbers type="text/template">
+															definedRoutes.forEach(route => {
+																	route.addEventListener('click', navigate, false)
+																})
+						</script>
+					</code>
+				</pre>
+					</section>
+					<section>
+						Function for rendering <br>
+						HTML template elements
+						<pre><code data-line-numbers data-ln-start-from="46" style="font-size: .7rem; line-height: 1rem;" ><script data-ln-start-from="8" data-line-numbers type="text/template">
+															let navigate = e => {
+																let route = e.target.attributes[0].value;
+																let routeInfo = routerInstance.routes.filter(r => r.path === route)[0]
+																if (!routeInfo) {
+																	window.history.pushState({}, '', 'error')
+																	const pastElement = document.querySelector(`#error`)
+																	insertElement(pastElement, root)
+
+																} else {
+																	window.history.pushState({}, '', routeInfo.path)
+																	const pastElement = document.querySelector(`#${routeInfo.path.substring(1).toLowerCase()}`)
+																	insertElement(pastElement, root)
+																}
+															}
+							</script>
+						</code>
+					</pre>
+				</section>
+				<section> <img src="./img/Routing/home.jpg" alt=""></section>
+				<section> <img src="./img/Routing/about.jpg" alt=""></section>
+				<section> <img src="./img/Routing/contact.jpg" alt=""></section>
+				<section> <img src="./img/Routing/error.jpg" alt=""></section>
+			</section>
+				<section>
+					<section>
+						<span style="font-size:4rem">The End</span>
+					</section>
+				</section>
 			</div>
 		</div>
 
@@ -136,8 +303,8 @@
 				hash: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+			})
 		</script>
 	</body>
 </html>
